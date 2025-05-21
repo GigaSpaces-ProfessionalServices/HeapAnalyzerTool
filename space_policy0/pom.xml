@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>space_policy0</artifactId>
+    <parent>
+        <groupId>org.example</groupId>
+        <artifactId>HeapAnalyzerTool</artifactId>
+        <version>0.1</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>model</artifactId>
+            <version>0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.gigaspaces</groupId>
+            <artifactId>xap-openspaces</artifactId>
+            <version>${gsVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.26</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.gigaspaces</groupId>
+            <artifactId>xap-datagrid</artifactId>
+            <version>${gsVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.gigaspaces</groupId>
+            <artifactId>xap-common</artifactId>
+            <version>${gsVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>package-dependencies</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <attach>false</attach>
+                            <ignoreDirFormatExtensions>true</ignoreDirFormatExtensions>
+                            <descriptors>
+                                <descriptor>src/assembly/dependencies.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>package-dependencies</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

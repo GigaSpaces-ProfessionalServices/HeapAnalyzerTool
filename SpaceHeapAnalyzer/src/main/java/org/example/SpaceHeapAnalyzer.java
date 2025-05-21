@@ -92,9 +92,9 @@ public class SpaceHeapAnalyzer {
             verbose = args.length >= 6 ? Boolean.parseBoolean(args[5]) : false;
 
         } else {
-            dumpPath = Paths.get("heap.hprof");
-//            actionParam = "HOW_MANY_OBJECTS_WE_CAN_HAVE";
-            actionParam = "SUGGEST_HEAP_SIZE";
+            dumpPath = Paths.get("/home/sushil/Downloads/space-zipkin-01 [1]  gsc-5[318931]/gsc-sushil-laptop-pid-318931/heap.hprof");
+            actionParam = "HOW_MANY_OBJECTS_WE_CAN_HAVE";
+//            actionParam = "SUGGEST_HEAP_SIZE";
 //            UserTotalHeapSize = args.length >= 3 ? getHardLimitMemoryInBytes(args[2]) : 2147483648l; // 2g = 2147483648
             UserTotalHeapSize = args.length >= 3 ? getHardLimitMemoryInBytes(args[2]) : 2752000000l; // 2g = 2147483648
             desiredFreePercentage = args.length >= 4 ? Integer.parseInt(args[3]) : 40;

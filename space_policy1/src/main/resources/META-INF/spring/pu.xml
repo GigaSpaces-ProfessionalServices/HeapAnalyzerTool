@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:os-core="http://www.openspaces.org/schema/core"
+       xmlns:os-events="http://www.openspaces.org/schema/events"
+       xmlns:os-remoting="http://www.openspaces.org/schema/remoting"
+       xmlns:blob-store="http://www.openspaces.org/schema/rocksdb-blob-store"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.openspaces.org/schema/core http://www.openspaces.org/schema/core/openspaces-core.xsd
+       http://www.openspaces.org/schema/events http://www.openspaces.org/schema/events/openspaces-events.xsd
+       http://www.openspaces.org/schema/remoting http://www.openspaces.org/schema/remoting/openspaces-remoting.xsd
+       http://www.openspaces.org/schema/rocksdb-blob-store http://www.openspaces.org/schema/rocksdb-blob-store/openspaces-rocksdb-blobstore.xsd">
+
+
+    <bean id="propertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreResourceNotFound" value="true" />
+        <property name="properties">
+            <props>
+                <prop key="sourceSpaceName">test1</prop>
+            </props>
+        </property>
+    </bean>
+
+    <context:component-scan base-package="com.mycompany.app.model" />
+
+    <!-- Enables to configure Spring beans through annotations   -->
+    <context:annotation-config />
+
+    <!-- Enable @PostPrimary and others annotation support. -->
+    <os-core:annotation-support />
+
+    <!-- Enables using @Polling and @Notify annotations to creating polling and notify containers  -->
+    <os-events:annotation-support />
+
+    <!-- Enables using @RemotingService and other remoting related annotations   -->
+    <os-remoting:annotation-support />
+    <os-core:embedded-space id="space" space-name="${sourceSpaceName}" mirrored="false">
+        <os-core:properties>
+            <props>
+                <prop key="space-config.engine.cache_policy">1</prop>
+                <prop key="space-config.engine.memory_usage.high_watermark_percentage">98</prop>
+                <prop key="space-config.engine.memory_usage.write_only_block_percentage">97</prop>
+                <prop key="space-config.engine.memory_usage.write_only_check_percentage">96</prop>
+                <prop key="space-config.engine.memory_usage.low_watermark_percentage">95</prop>
+                <prop key="space-config.engine.memory_usage.gc-before-shortage">false</prop>
+            </props>
+        </os-core:properties>
+    </os-core:embedded-space>
+
+
+
+    <!-- Defines a distributed transaction manager.-->
+    <os-core:distributed-tx-manager id="transactionManager" />
+
+    <!-- Define the GigaSpace instance that the application will use to access the space  -->
+    <os-core:giga-space id="gigaSpace" space="space" tx-manager="transactionManager"/>
+
+</beans>
