@@ -67,19 +67,19 @@ There are 2 action paramaters to run this code
 ### For HOW_MANY_OBJECTS_WE_CAN_HAVE
 ## Steps to run
 * Download Xap - https://gs-releases-us-east-1.s3.amazonaws.com/smart-cache/16.4.0/gigaspaces-smart-cache-enterprise-16.4.0.zip
-* run this command inside bin folder "./gs.sh host run-agent --auto --gsc=2"
+* Extract zip and run this command inside bin folder "./gs.sh host run-agent --auto --gsc=2"
 * Deploy space_policy1 Space with "./gs.sh pu deploy space --partitions=2 space_policy1/target/space_policy1-0.1.jar"
-* Run Feeder with "java -jar feeder/target/feeder-0.1-jar-with-dependencies.jar"
-* Go WEBUI http://localhost:8099/ 
+* Run Feeder with "java -jar feeder/target/feeder-0.1-jar-with-dependencies.jar"  (In feeder code AAMultithreadedFeeder file put DEFAULT_NUM_OBJECTS like 1k)
+* Go to WEBUI http://localhost:8099/ 
 * Select processing units tab 
-* Select particular partition for which you want to generate report and click on Generate Dump
+* Select particular partition for which you want to generate report
 * Then select JVM Heap Dump and Generate it
-* Now Extract the generated zip and go to pid folder and copy the path of heap.hprof
+* Now Extract the generated zip and go to maanger pid folder and copy the path of heap.hprof
 * Command to run - java -jar <SpaceHeapAnalyzer.Jar> <DumpPath> HOW_MANY_OBJECTS_WE_CAN_HAVE <TotalHeapSize> <DesiredFreePercentage> <ReportPath> <Verbose> (Report Path and Verbose is Optional.  By Default ReportPath will be null and Verbose will be false)
 * Like Example - java -jar SpaceHeapAnalyzer-1.0-SNAPSHOT-jar-with-dependencies.jar heap.hprof HOW_MANY_OBJECTS_WE_CAN_HAVE 2g 40 report.json false
 * From this you will get the max count of records for per partition open pu.xml for space_policy0 and put that max count value in space-config.engine.cache_size
-* run mvn clean install under space_policy0
-* Deploy space_policy0 Space with "/home/sushil/Sushil/Projects/git/HeapAnalyzerTool/space_policy0/target/space_policy0-0.1.jar"
+* Run mvn clean install under space_policy0
+* Deploy space_policy0 Space with "./gs.sh pu deploy space --partitions=2 space_policy1/target/space_policy0-0.1.jar"
 * Go to Feeder code open AAMultithreadedFeeder file 
 * Put some random amount which is greater than max count in DEFAULT_NUM_OBJECTS 
 * Run feeder and test it
@@ -87,11 +87,11 @@ There are 2 action paramaters to run this code
 ### For SUGGEST_HEAP_SIZE
 #### Single partitions test
 * This will suggest Heap Size for per partition data
-* Asumming you have heap.hrof file which you have downloaded from WEBUI
+* Assuming you have heap.hrof file which you have downloaded from WEBUI
 * Command to run - java -jar <SpaceHeapAnalyzer.Jar> <DumpPath> SUGGEST_HEAP_SIZE <TotalHeapSize> <DesiredFreePercentage> <ReportPath> <Verbose> <DesiredTotalObjects>
 * Like Example - java -jar SpaceHeapAnalyzer-1.0-SNAPSHOT-jar-with-dependencies.jar heap.hprof SUGGEST_HEAP_SIZE 2g 40 report.json false 10000
 * You will get Suggested Heap Size of GSC start GSC with that size
-* Deploy space_policy0 Space with the number of records which you have given for SUGGEST_HEAP_SIZE command
+* Deploy space_policy0 Space with the number of records which you have got from SUGGEST_HEAP_SIZE command
 * Run Feeder and test it
 
 #### Multiple partitions test
